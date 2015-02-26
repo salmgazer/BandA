@@ -20,6 +20,9 @@ class Controller{
 	//connection
 	var $connect;
 	
+
+
+	
 	function __construct(){
 		//a new instance of Controller_User 
 		//Controller_User is the controller for Model_User class
@@ -40,10 +43,15 @@ class Controller{
 		}
 	}
 
+
+
+
     //destructor for the class
 	function __destruct(){
 
 	}
+
+
 
     //function to signin using master controller
 	function sign_in($user_email, $user_password){
@@ -53,6 +61,9 @@ class Controller{
 		return $this->user_control->master_sign_in($this->connect->dbc, $user_email, $user_password);
 	}
 
+
+
+
 	//function to sign up using master controller
 	function sign_up($user_firstname, $user_lastname, $user_email, $user_password, $user_profile_picture){
 		$user_id = generate_user_id($user_email);
@@ -60,9 +71,6 @@ class Controller{
 		return $this->user_control->master_add_user($this->connect->dbc, $user_id, $user_firstname, $user_lastname,
 		 $user_email, $user_password, $user_profile_picture);
 	}
-	
-
-
 }
 
 ?>

@@ -13,6 +13,8 @@ class Connect{
 	var $connection_status;
 
 
+
+
     function __construct()
 	{
 		//set database connection to null
@@ -20,6 +22,9 @@ class Connect{
 		//set connection status to true
 		$this->connection_status=true;
 	}
+
+
+
 
     //check if connected to mysql server
 	function connect_server(){
@@ -35,6 +40,8 @@ class Connect{
 		//return connection status
 		return $this->connection_status;
 	}
+
+
 
     //select database
 	function pickdatabase($dbname, $dblink){

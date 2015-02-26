@@ -25,6 +25,8 @@ class Model_User{
     var $user_details;
     //key
     var $thekey;
+
+    
 	
     //constructor
 	function __construct(){
@@ -35,10 +37,14 @@ class Model_User{
 		
 	}
 
+
+
     //destructor
 	function __destruct(){
 
 	}
+
+
 
 
      //function to create an instance of a new user
@@ -52,21 +58,24 @@ class Model_User{
         $newuser->user_picture;
        
     }
+
+
+
     
     //function to add user to user table
     function add_user($conn, $user_id, $user_firstname, $user_lastname, $user_email, $user_password, $user_picture){
         //encrypt password here
         $user_password = encrypt($user_password, $this->thekey);
-        //encrypt email here
-        //echo $user_password;
+        //encrypt email
         $user_email = encrypt($user_email, $this->thekey);
-        //echo $user_email;
-
         $this->user_query_status = true;
         $this->user_query = mysqli_query($conn, "CALL add_user('$user_id', '$user_firstname', '$user_lastname',
-         '$user_email', '$user_password', ".file_get_contents($user_picture).")");
+         '$user_email', '$user_password', 'file_get_contents($user_picture)')");
         return ($this->user_query != null);
     }
+
+
+
 
 
     //function to check if user owns pass
@@ -85,10 +94,16 @@ class Model_User{
     }
     
 
+
+
+
     //function to get user details after signing in
     function  get_user_details(){
         return $this->user_details; 
     }
+
+
+
 
     //function to change email  :: update email
     function change_user_email($conn, $user_id, $user_old_email, $user_new_email, $user_password){
@@ -101,6 +116,10 @@ class Model_User{
         }
     }
 
+
+
+
+
     //function to change profile picture
     function change_user_profile_picture($conn, $user_id, $user_picture){
         $this->user_query_status = true;
@@ -111,6 +130,9 @@ class Model_User{
         }
     }
 
+
+
+
     //function to change user's names
     function change_user_names($conn, $user_id, $user_new_firstname, $user_new_lastname){
         $this->user_query_status = true;
@@ -119,6 +141,10 @@ class Model_User{
             $this->user_query_status = false;
         }
     }
+
+
+
+
 
     //function to change user's password
     function change_user_password($conn, $user_id, $user_new_password, $user_old_password){

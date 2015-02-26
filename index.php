@@ -4,22 +4,6 @@ require_once('includes/initiate.php');
 //include functions
 include_once('includes/functions.php');
 
-//process sign in here
-process_sign_in($control, 'home.php');
-//process sign up here
-process_sign_up($control, 'signup_confirm.php');
-/*
-$enc = encrypt("sal@gmail.com",'mhbjhjhjkjjkogjrbg093ti');
-echo $enc;
-echo "<br>";
-echo decrypt($enc, 'mhbjhjhjkjjkogjrbg093ti');
-*/
-/*echo encrypt('sal@gmail.com', $key);
-echo "<br>";
-echo encrypt('iamhere', $key);
-echo "<br>";
-*/
-//echo $control->user_control->user->confirm_password($control->connect->dbc,'sal@gmail.com', 'iamhere');
 
 ?>
 

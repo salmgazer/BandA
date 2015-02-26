@@ -13,6 +13,9 @@ class Controller_User{
 	//Instance of user class
 	var $user;
 
+
+
+
 	//constructor
 	function __construct(){
 		//create a new instance of Connect class
@@ -21,11 +24,17 @@ class Controller_User{
 		//create new instance of Model_User class
 		$this->user = new Model_User();
 	}
+
+
+
     
     //destrcutor
 	function __destruct(){
 
 	}
+
+
+
 
 	//function to connect to mysql
 	function connect_to_mysql(){
@@ -35,11 +44,17 @@ class Controller_User{
 		return $this->connect->connection_status;
 	}
 
+
+
+
 	//function to select database
 	function select_database($conn, $dbname){
 		//selects database
 		$this->connect->pickdatabase($dbname, $this->connect->dbc);
 	}
+
+
+
 
     //create an instance of user.
 	function createInstance(){
@@ -47,6 +62,9 @@ class Controller_User{
 		return new Model_User();
 
 	}
+
+
+
 
     //function to add a new user :: returns boolean
 	function add_user($user_id, $user_firstname, $user_lastname, $user_email, $user_password, $user_picture){
@@ -61,11 +79,17 @@ class Controller_User{
 		 }
 	}
 
+
+
+
 	//function to add a new user :: returns boolean - using master control
 	function master_add_user($conn, $user_id, $user_firstname, $user_lastname, $user_email, $user_password, $user_picture){
 		 return ($this->user->add_user($conn, $user_id, $user_firstname, $user_lastname, $user_email, $user_password,
 		  $user_picture) > 0);
 	}
+
+
+
 
 	//function to signin
 	/*function sing_in($user_email, $user_password){
@@ -75,12 +99,18 @@ class Controller_User{
 			//homepage is opened only when session exists
 	}*/
 
+
+
+
 	//function to signin using master controller
 	function master_sign_in($conn, $user_email, $user_password){
         //check if user exists in the system
         //echo $this->user->confirm_password($conn, $user_email, $user_password);
 		return ($this->user->confirm_password($conn, $user_email, $user_password) > 0);
 	}
+
+
+
 
 	//function to signout
 	function sign_out(){
