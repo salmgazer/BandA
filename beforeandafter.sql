@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 25, 2015 at 07:16 AM
+-- Generation Time: Feb 26, 2015 at 07:29 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -30,7 +30,7 @@ BEGIN
 Insert into post (post_id, before_pic, after_pic, user_id) values (id, bf, af, ui);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `add_user`(IN `id` VARCHAR(10), IN `fn` VARCHAR(20), IN `ln` VARCHAR(20), IN `email` VARCHAR(30), IN `password` VARCHAR(20), IN `picture` BLOB)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_user`(IN `id` VARCHAR(128), IN `fn` VARCHAR(128), IN `ln` VARCHAR(128), IN `email` VARCHAR(128), IN `password` VARCHAR(128), IN `picture` BLOB)
     NO SQL
 BEGIN
 Insert into users values(id, fn, ln, email, password, picture);
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `post` (
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `user_id` varchar(10) NOT NULL,
+  `user_id` varchar(128) NOT NULL,
   `user_firstname` varchar(128) NOT NULL,
   `user_lastname` varchar(128) NOT NULL,
   `user_email` varchar(128) NOT NULL,
