@@ -107,15 +107,15 @@ $_SESSION['user_name'] = CONCAT($user_details['user_firstname'].' '.$user_detail
 }
 
 
-
-
 //function to send simple email
-function send_email_asfter_signup($to, $subject, $message, $user_id, $bandfemail){
+function send_email($to, $subject, $message, $user_id, $bandaemail){
+    //link for activation
+    $activation_link = "http://banda.cloworkonline.webege.com/?info=";
     $email_status = false;
     //define the message to be sent.
-    $message = 'Go to this link and activate'.'some link...'.$user_id; 
+    $message = 'Go to this link and activate. '.$activation_link.''.$user_id; 
     //define the headers we want passed
-    $headers = 'From: '.$bandfemail;
+    $headers = 'From: '.$bandaemail;
 
     //send the email
     if(mail( $to, $subject, $message, $headers )){
@@ -123,8 +123,6 @@ function send_email_asfter_signup($to, $subject, $message, $user_id, $bandfemail
      }
      return $email_status;
 }
-
-
 
 
 //function to process login information when user wants to sign in
@@ -147,8 +145,6 @@ function process_sign_in($controller, $homepage){
     }
   }
 }
-
-
 
 
 //function to process sign up
@@ -175,17 +171,14 @@ if ($user_photo == null) {
   if($controller->user_control->user->add_user($controller->connect->dbc, generate_user_id($user_email),
    $user_firstname, $user_lastname, $user_email, $user_password, $user_photo) == true){
     //alert user sign up was successful
-    echo "Sign up successful, send email by now";
     $email_sent = false;
-    $count = 0;
-    while($email_sent == false && $count < 10){
-     if(send_email_asfter_signup($user_email, 'Welcome to B&F', 'You are now on BandF,
-      follow link to confirm', $user_id, 'clowork@gmail.com') == true){
+     if(send_email($user_email, 'Welcome to B&A', 'You are now on BandA,
+      follow link to confirm', $user_id, 'clowork@gmail.com')){
       $email_status = true;
-     }
-     $count++;
     }
+
     //send user to successful sign up confirmation page
+    $_SESSION['user_email'] = $user_email;
     include($sign_up_confirmation_page);
     exit();
   }else{
@@ -196,7 +189,17 @@ if ($user_photo == null) {
 }
 }
 
-?>
+
+function reset_password($user_email){
+    $user_email = encrypt($user_email, $key);
+    //take email address from the user
+    if(isset($_POST['forgotten_password_email'])){
+        send_email($email, "Forgotten your B&F passpword?", "Click the link to reset your password: http://localhost/banda/change_password?email=$user_email", $user_id, $bandaemail);
+    }
+    //send email to user with :: email should contain link the user can click to access page to update password
+    
+ 
+}
 
 
 
