@@ -44,9 +44,9 @@ function decrypt($data, $secret)
     //Take first 8 bytes of $key and append them to the end of $key.
     $key .= substr($key, 0, 8);
 
-    $data = base64_decode($data);
+    //$data = base64_decode($data);
 
-    $data = mcrypt_decrypt('tripledes', $key, $data, 'ecb');
+    $data = mcrypt_decrypt('tripledes', $key, base64_decode($data), 'ecb');
 
     $block = mcrypt_get_block_size('tripledes', 'ecb');
     $len = strlen($data);
@@ -60,7 +60,7 @@ function decrypt($data, $secret)
 
 //function to upload profile picture
 function upload_user_profile_picture(){
-  $profile_picture = null;
+  //$profile_picture = null;
   if(isset($_FILES['profile_picture'])){
         //file types allowed
         $types_allowed = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png');
@@ -68,13 +68,13 @@ function upload_user_profile_picture(){
         //$size_allowed = 1024;//tamanho maximo em bytes
         
         // the original name of the file
-        $file_name = $_FILES['profile_picture']['name'];
+        //$file_name = $_FILES['profile_picture']['name'];
         
         // type of the file, example "image/gif"
         $file_type = $_FILES['profile_picture']['type'];
         
         // The size of the file in bytes
-        $file_Size = $_FILES['profile_picture']['size'];
+        //$file_Size = $_FILES['profile_picture']['size'];
         
         // the temp name of the file
         $file_temp = $_FILES['profile_picture']['tmp_name'];
@@ -113,7 +113,7 @@ $_SESSION['user_name'] = CONCAT($user_details['user_firstname'].' '.$user_detail
 function send_email_asfter_signup($to, $subject, $message, $user_id, $bandfemail){
     $email_status = false;
     //define the message to be sent.
-    $message = 'Go to this link and activate'.'some link...'; 
+    $message = 'Go to this link and activate'.'some link...'.$user_id; 
     //define the headers we want passed
     $headers = 'From: '.$bandfemail;
 
@@ -177,13 +177,9 @@ if ($user_photo == null) {
     //alert user sign up was successful
     echo "Sign up successful, send email by now";
     $email_sent = false;
-    $count = 0;
-    while($email_sent == false && $count < 10){
      if(send_email_asfter_signup($user_email, 'Welcome to B&F', 'You are now on BandF,
       follow link to confirm', $user_id, 'clowork@gmail.com') == true){
       $email_status = true;
-     }
-     $count++;
     }
     //send user to successful sign up confirmation page
     include($sign_up_confirmation_page);
