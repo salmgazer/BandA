@@ -132,13 +132,14 @@ and open the template in the editor.
                               <div class="panel-body">
                                   
                                   <!--signup form-->
+                                  <!--/* @var $_SERVER type */-->
                                   <form class="form-horizontal" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>"  enctype="multipart/form-data">
                                       
                                       <!--upload image-->
                                       <div class="">
                                           <!--<img class="">-->
                                           <!--<a id="display"class="fa fa-user fa-5x"></a><br>-->
-                                          <img src="#" id="display" alt="Image to display" style="width: 100px; height: 100px">
+                                          <img class="img-rounded" src="#" id="display" alt="Image to display" style="width: 100px; height: 100px">
                                       </div><br>
                                       
                                       <!--image chooser-->
@@ -256,8 +257,8 @@ and open the template in the editor.
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $('#display').css('background', 'transparent url('+e.target.result +') left top no-repeat');
-            }
+                    $('#display').attr('src', e.target.result).width(100).height(100);
+            };
 
             reader.readAsDataURL(input.files[0]);
         }
@@ -275,7 +276,7 @@ and open the template in the editor.
        //       popover for signup email
         $(function () {
             $("#signup_email")
-                .popover({ title: 'Email', content: "example: kofi.ama@gmail.com" })
+                .popover({ title: 'Email', content: "example: kofi.ama@gmail.com" } )
                 .blur(function () {
                     $(this).popover('hide');
                 });

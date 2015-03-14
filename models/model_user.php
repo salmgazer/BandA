@@ -28,19 +28,19 @@ class Model_User{
 
     
     //constructor
-    function __construct(){
+	function __construct(){
         $this->query_status = true;
         $this->user_details = null;
         $this->user_query = null;
         $this->thekey = "mhbjhjhjkjjkogjrbg093ti";
-        
-    }
+		
+	}
 
 
     //destructor
-    function __destruct(){
+	function __destruct(){
 
-    }
+	}
 
 
      //function to create an instance of a new user
@@ -86,17 +86,6 @@ class Model_User{
             return $numrows;
     }
 
-    //function to activate user
-    function activate_user($conn, $user_id){
-        $this->user_query_status = true;
-        $this->user_query = mysql_query($conn, "UPDATE users SET user_status='activated' WHERE user_id='$user_id");
-        if ($this->user_query == null) {
-            $this->user_query_status = false;
-            //prompt user activation went wrong
-            exit();
-        }
-    }    
-
 
     //function to get user details after signing in
     function  get_user_details(){
@@ -139,6 +128,17 @@ class Model_User{
             $this->user_query_status = false;
         }
     }
+
+    //function to activate user
+    function activate_user($conn, $user_id){
+        $this->user_query_status = true;
+        $this->user_query = mysql_query($conn, "UPDATE users SET user_status='activated' WHERE user_id='$user_id");
+        if ($this->user_query == null) {
+            $this->user_query_status = false;
+            //prompt user activation went wrong
+            exit();
+        }
+    }    
 
 
     //function to change user's password
