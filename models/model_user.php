@@ -6,8 +6,8 @@ include_once('./includes/functions.php');
 class Model_User{
 
     //user id
-	var $user_id;
-	//firstname
+    var $user_id;
+    //firstname
     var $user_firstname;
     //lastname
     var $user_lastname;
@@ -27,41 +27,35 @@ class Model_User{
     var $thekey;
 
     
-	
     //constructor
-	function __construct(){
+    function __construct(){
         $this->query_status = true;
         $this->user_details = null;
         $this->user_query = null;
         $this->thekey = "mhbjhjhjkjjkogjrbg093ti";
-		
-	}
-
+        
+    }
 
 
     //destructor
-	function __destruct(){
+    function __destruct(){
 
-	}
-
-
+    }
 
 
      //function to create an instance of a new user
-     function create_newuser($user_id, $user_firstname, $user_lastname, $user_email, $user_password, $user_picture){
+     function create_newuser($user_firstname, $user_lastname, $user_email, $user_password, $user_picture){
         $newuser = new Model_User();
         $newuser->user_id = generate_user_id();
-        $newuser->user_firstname;
-        $newuser->user_lastname;
-        $newuser->user_email;
-        $newuser->user_password;
-        $newuser->user_picture;
+        $newuser->user_firstname = $user_firstname;
+        $newuser->user_lastname = $user_lastname;
+        $newuser->user_email = $user_email;
+        $newuser->user_password = $user_password;
+        $newuser->user_picture = $user_picture;
        
     }
 
 
-
-    
     //function to add user to user table
     function add_user($conn, $user_id, $user_firstname, $user_lastname, $user_email, $user_password, $user_picture){
         //encrypt password here
@@ -69,13 +63,12 @@ class Model_User{
         //encrypt email
         $user_email = encrypt($user_email, $this->thekey);
         $this->user_query_status = true;
-        $this->user_query = mysqli_query($conn, "CALL add_user('$user_id', '$user_firstname', '$user_lastname',
+        $this->user_query = mysqli_query($conn, "INSERT INTO users VALUES('$user_id', '$user_firstname', '$user_lastname',
          '$user_email', '$user_password', 'file_get_contents($user_picture)')");
+        /*$this->user_query = mysqli_query($conn, "CALL add_user('$user_id', '$user_firstname', '$user_lastname',
+         '$user_email', '$user_password', 'file_get_contents($user_picture)')");*/
         return ($this->user_query != null);
     }
-
-
-
 
 
     //function to check if user owns pass
@@ -86,15 +79,23 @@ class Model_User{
         $user_password = encrypt($user_password, $this->thekey);
         //echo $user_password;
 
-            $this->user_query = mysqli_query($conn, "CALL verify_user('$user_email','$user_password')");//return wanted values
+            $this->user_query = mysqli_query($conn, "SELECT * FROM users WHERE user_email='$user_email' AND user_password='$user_password'");//return wanted values
             $row = mysqli_fetch_array($this->user_query, MYSQLI_ASSOC);
             $numrows = mysqli_num_rows($this->user_query);
             $this->user_details = $row;
             return $numrows;
     }
-    
 
-
+    //function to activate user
+    function activate_user($conn, $user_id){
+        $this->user_query_status = true;
+        $this->user_query = mysql_query($conn, "UPDATE users SET user_status='activated' WHERE user_id='$user_id");
+        if ($this->user_query == null) {
+            $this->user_query_status = false;
+            //prompt user activation went wrong
+            exit();
+        }
+    }    
 
 
     //function to get user details after signing in
@@ -103,13 +104,12 @@ class Model_User{
     }
 
 
-
-
     //function to change email  :: update email
     function change_user_email($conn, $user_id, $user_old_email, $user_new_email, $user_password){
         $this->user_query_status = true;
         if ($this->confirm_password($conn, $user_old_email, $user_password) == true) {
-            $this->user_query = mysqli_query($conn, "CALL change_user_email('$user_new_email', '$user_id'");
+            $this->user_query = mysqli_connect($conn, "UPDATE users SET user_email='$user_email' WHERE user_id='$user_id'");
+            //$this->user_query = mysqli_query($conn, "CALL change_user_email('$user_new_email', '$user_id'");
             if ($this->user_query == null) {
                 $this->user_query_status = false;
             }
@@ -117,13 +117,11 @@ class Model_User{
     }
 
 
-
-
-
     //function to change profile picture
     function change_user_profile_picture($conn, $user_id, $user_picture){
         $this->user_query_status = true;
-        $this->user_query = mysqli_connect($conn, "CALL change_user_picture($user_picture, '$id')");
+        $this->user_query = mysqli_connect($conn, "UPDATE users SET user_picture='$user_picture' WHERE user_id='$user_id'");
+        //$this->user_query = mysqli_connect($conn, "CALL change_user_picture($user_picture, '$id')");
         if ($this->user_query == null) {
             $this->user_query_status = false;
             exit();
@@ -131,26 +129,24 @@ class Model_User{
     }
 
 
-
-
     //function to change user's names
     function change_user_names($conn, $user_id, $user_new_firstname, $user_new_lastname){
         $this->user_query_status = true;
-        $this->user_query = mysqli_query($conn, "CALL change_user_names('$user_new_firstname', '$user_new_lastname')");
+        $this->user_query = mysqli_connect($conn, "UPDATE users SET user_firstname='$user_new_firstname',
+         user_lastname='$user_lastname' WHERE user_id='$user_id'");
+       // $this->user_query = mysqli_query($conn, "CALL change_user_names('$user_new_firstname', '$user_new_lastname')");
         if ($this->user_query == null) {
             $this->user_query_status = false;
         }
     }
 
 
-
-
-
     //function to change user's password
     function change_user_password($conn, $user_id, $user_new_password, $user_old_password){
         $this->user_query_status = true;
         if ($this->confirm_password($conn, $user_email, $user_old_password) == true) {
-            $this->user_query = mysqli_query($conn, "CALL change_user_password('$user_new_password', $user_id')");
+            $this->user_query = mysqli_connect($conn, "UPDATE users SET user_password='$user_new_password' WHERE user_id='$user_id'");
+            //$this->user_query = mysqli_query($conn, "CALL change_user_password('$user_new_password', $user_id')");
             if ($this->user_query == null) {
                 $this->user_query_status = false;
             }

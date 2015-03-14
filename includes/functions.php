@@ -44,9 +44,15 @@ function decrypt($data, $secret)
     //Take first 8 bytes of $key and append them to the end of $key.
     $key .= substr($key, 0, 8);
 
+<<<<<<< HEAD
     //$data = base64_decode($data);
 
     $data = mcrypt_decrypt('tripledes', $key, base64_decode($data), 'ecb');
+=======
+    $data = base64_decode($data);
+
+    $data = mcrypt_decrypt('tripledes', $key, $data, 'ecb');
+>>>>>>> 3c8403677d2e56f148b817ded17491f048b37316
 
     $block = mcrypt_get_block_size('tripledes', 'ecb');
     $len = strlen($data);
@@ -60,7 +66,11 @@ function decrypt($data, $secret)
 
 //function to upload profile picture
 function upload_user_profile_picture(){
+<<<<<<< HEAD
   //$profile_picture = null;
+=======
+  $profile_picture = null;
+>>>>>>> 3c8403677d2e56f148b817ded17491f048b37316
   if(isset($_FILES['profile_picture'])){
         //file types allowed
         $types_allowed = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png');
@@ -68,13 +78,21 @@ function upload_user_profile_picture(){
         //$size_allowed = 1024;//tamanho maximo em bytes
         
         // the original name of the file
+<<<<<<< HEAD
         //$file_name = $_FILES['profile_picture']['name'];
+=======
+        $file_name = $_FILES['profile_picture']['name'];
+>>>>>>> 3c8403677d2e56f148b817ded17491f048b37316
         
         // type of the file, example "image/gif"
         $file_type = $_FILES['profile_picture']['type'];
         
         // The size of the file in bytes
+<<<<<<< HEAD
         //$file_Size = $_FILES['profile_picture']['size'];
+=======
+        $file_Size = $_FILES['profile_picture']['size'];
+>>>>>>> 3c8403677d2e56f148b817ded17491f048b37316
         
         // the temp name of the file
         $file_temp = $_FILES['profile_picture']['tmp_name'];
@@ -107,6 +125,7 @@ $_SESSION['user_name'] = CONCAT($user_details['user_firstname'].' '.$user_detail
 }
 
 
+<<<<<<< HEAD
 //function to send simple email
 function send_email($to, $subject, $message, $user_id, $bandaemail){
     //link for activation
@@ -116,6 +135,17 @@ function send_email($to, $subject, $message, $user_id, $bandaemail){
     $message = 'Go to this link and activate. '.$activation_link.''.$user_id; 
     //define the headers we want passed
     $headers = 'From: '.$bandaemail;
+=======
+
+
+//function to send simple email
+function send_email_asfter_signup($to, $subject, $message, $user_id, $bandfemail){
+    $email_status = false;
+    //define the message to be sent.
+    $message = 'Go to this link and activate'.'some link...'; 
+    //define the headers we want passed
+    $headers = 'From: '.$bandfemail;
+>>>>>>> 3c8403677d2e56f148b817ded17491f048b37316
 
     //send the email
     if(mail( $to, $subject, $message, $headers )){
@@ -125,6 +155,11 @@ function send_email($to, $subject, $message, $user_id, $bandaemail){
 }
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 3c8403677d2e56f148b817ded17491f048b37316
 //function to process login information when user wants to sign in
 function process_sign_in($controller, $homepage){
   //check if details ahave been posted
@@ -147,6 +182,11 @@ function process_sign_in($controller, $homepage){
 }
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 3c8403677d2e56f148b817ded17491f048b37316
 //function to process sign up
 function process_sign_up($controller, $sign_up_confirmation_page){
   if (isset($_POST['signup_email']) && isset($_POST['signup_password']) &&
@@ -171,6 +211,7 @@ if ($user_photo == null) {
   if($controller->user_control->user->add_user($controller->connect->dbc, generate_user_id($user_email),
    $user_firstname, $user_lastname, $user_email, $user_password, $user_photo) == true){
     //alert user sign up was successful
+<<<<<<< HEAD
     $email_sent = false;
      if(send_email($user_email, 'Welcome to B&A', 'You are now on BandA,
       follow link to confirm', $user_id, 'clowork@gmail.com')){
@@ -179,6 +220,19 @@ if ($user_photo == null) {
 
     //send user to successful sign up confirmation page
     $_SESSION['user_email'] = $user_email;
+=======
+    echo "Sign up successful, send email by now";
+    $email_sent = false;
+    $count = 0;
+    while($email_sent == false && $count < 10){
+     if(send_email_asfter_signup($user_email, 'Welcome to B&F', 'You are now on BandF,
+      follow link to confirm', $user_id, 'clowork@gmail.com') == true){
+      $email_status = true;
+     }
+     $count++;
+    }
+    //send user to successful sign up confirmation page
+>>>>>>> 3c8403677d2e56f148b817ded17491f048b37316
     include($sign_up_confirmation_page);
     exit();
   }else{
@@ -189,6 +243,7 @@ if ($user_photo == null) {
 }
 }
 
+<<<<<<< HEAD
 
 function reset_password($user_email){
     $user_email = encrypt($user_email, $key);
@@ -200,6 +255,9 @@ function reset_password($user_email){
     
  
 }
+=======
+?>
+>>>>>>> 3c8403677d2e56f148b817ded17491f048b37316
 
 
 
