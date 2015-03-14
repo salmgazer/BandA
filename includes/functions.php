@@ -9,6 +9,8 @@ function generate_user_id($theemail){
 }
 
 
+
+
 //function to encrypt
 function encrypt($data, $secret)
 {
@@ -62,9 +64,17 @@ function upload_user_profile_picture(){
   if(isset($_FILES['profile_picture'])){
         //file types allowed
         $types_allowed = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/png');
+
+        //$size_allowed = 1024;//tamanho maximo em bytes
+        
+        // the original name of the file
+        //$file_name = $_FILES['profile_picture']['name'];
         
         // type of the file, example "image/gif"
         $file_type = $_FILES['profile_picture']['type'];
+        
+        // The size of the file in bytes
+        //$file_Size = $_FILES['profile_picture']['size'];
         
         // the temp name of the file
         $file_temp = $_FILES['profile_picture']['tmp_name'];
@@ -100,12 +110,10 @@ $_SESSION['user_name'] = CONCAT($user_details['user_firstname'].' '.$user_detail
 
 
 //function to send simple email
-function send_email_after_signup($to, $subject, $message, $user_id, $bandfemail){
+function send_email_asfter_signup($to, $subject, $message, $user_id, $bandfemail){
     $email_status = false;
-    //link to redirect user
-    $link = "http://storyboard.site50.net/?info=$user_id";
     //define the message to be sent.
-    $message = 'Go to this link and activate'.$link; 
+    $message = 'Go to this link and activate'.'some link...'.$user_id; 
     //define the headers we want passed
     $headers = 'From: '.$bandfemail;
 
@@ -141,6 +149,8 @@ function process_sign_in($controller, $homepage){
 }
 
 
+
+
 //function to process sign up
 function process_sign_up($controller, $sign_up_confirmation_page){
   if (isset($_POST['signup_email']) && isset($_POST['signup_password']) &&
@@ -163,17 +173,17 @@ if ($user_photo == null) {
   if it fails, retuns false, otherwise returns true*/
     $user_id = generate_user_id($user_email);
   if($controller->user_control->user->add_user($controller->connect->dbc, generate_user_id($user_email),
-   $user_firstname, $user_lastname, $user_email, $user_password, $user_photo) ==true){
+   $user_firstname, $user_lastname, $user_email, $user_password, $user_photo) == true){
     //alert user sign up was successful
-    //echo "Sign up successful, send email by now";
+    
+  //set user email seesion
+    $_SESSION['user_email'] = $user_email;
+
     $email_sent = false;
-     if(send_email_after_signup($user_email, 'Welcome to B&F', 'You are now on BandF,
-      follow link to confirm', $user_id, 'cloworklonline@gmail.com') == true){
+     if(send_email_asfter_signup($user_email, 'Welcome to B&F', 'You are now on BandF,
+      follow link to confirm', $user_id, 'clowork@gmail.com') == true){
       $email_status = true;
     }
-
-    //set user email seesion
-    $_SESSION['user_email'] = $user_email;
     //send user to successful sign up confirmation page
     include($sign_up_confirmation_page);
     exit();
@@ -186,12 +196,3 @@ if ($user_photo == null) {
 }
 
 ?>
-
-
-
-
-
-              
-
-    
-
