@@ -1,0 +1,8 @@
+database name: a7240557_banda
+database username: a7240557_adminba
+pass: bandaadmin
+https://github.com/salmgazer/BandA.git
+
+banda
+master
+banda123

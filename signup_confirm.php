@@ -1,3 +1,14 @@
+<?php
+
+include_once('./includes/functions.php');
+
+if (!isset($_SESSION['user_email'])) {
+    include('index.php');
+    exit();
+}
+
+
+?>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -55,7 +66,7 @@ and open the template in the editor.
                     
                     <div class="">
                         You have successfully created a new account on B&F. For security reasons you cannot access your new account yet.
-                        An email has been sent to <code>kwame.ama@gmail.com</code> containing a link that you can use to access your new 
+                        An email has been sent to <code><?php echo $_SESSION['user_email']; ?></code> containing a link that you can use to access your new 
                         created account.
                     </div>
                         

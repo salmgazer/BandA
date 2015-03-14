@@ -16,4 +16,16 @@ sign in as a guest;
 backup
 
 
+functions for post
+like/unlike
+share
+comment(one word - regex)--js
+get posts
+get posts of a friend based on user_id
+get number of views
+redirection
+
+
+
+
 

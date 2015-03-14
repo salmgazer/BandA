@@ -1,9 +1,25 @@
 <?php
 
+
 define("DB_HOST", 'localhost');
 define("DB_NAME", 'beforeandafter');
 define("DB_USER", 'root');
 define("DB_PASSWORD", '');
+
+
+/*
+define("DB_HOST", 'mysql4.000webhost.com');
+define("DB_NAME", 'a1115533_banda');
+define("DB_USER", 'a1115533_boss');
+define("DB_PASSWORD", 'yeswecan123');
+*/
+
+/*
+define("DB_HOST", 'mysql14.000webhost.com');
+define("DB_NAME", 'a7240557_banda');
+define("DB_USER", 'a7240557_master');
+define("DB_PASSWORD", 'YESwecan123');
+*/
 
 class Connect{
 
