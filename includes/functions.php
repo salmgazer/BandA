@@ -125,8 +125,6 @@ function send_email_asfter_signup($to, $subject, $message, $user_id, $bandfemail
 }
 
 
-
-
 //function to process login information when user wants to sign in
 function process_sign_in($controller, $homepage){
   //check if details ahave been posted

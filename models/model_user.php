@@ -153,6 +153,18 @@ class Model_User{
         }
     }
 
+// function to activate user
+function activate_user($conn, $user_id){
+   $this->user_query_status = true;
+   $this->user_query = mysql_query($conn, "UPDATE users SET user_status='activated' WHERE user_id='$user_id");
+   if ($this->user_query == null) {
+       $this->user_query_status = false;
+       //prompt user activation went wrong
+       exit();
+    }
+}
+
+
     
 }
 
