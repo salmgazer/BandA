@@ -83,6 +83,8 @@ class Model_User{
             $row = mysqli_fetch_array($this->user_query, MYSQLI_ASSOC);
             $numrows = mysqli_num_rows($this->user_query);
             $this->user_details = $row;
+            $this->set_user_sessions($row);
+            //$this->set_user_sessions($this->get_user($conn, $row['user_id'])); //set all sessions
             return $numrows;
     }
 
@@ -90,6 +92,27 @@ class Model_User{
     //function to get user details after signing in
     function  get_user_details(){
         return $this->user_details; 
+    }
+
+    function get_user($conn, $user_id){
+        $this->user_query_status = true;
+        $this->user_query = mysqli_query($conn, "SELECT * FROM users WHERE user_id = '$user_id'");
+        if ($this->user_query != null) {
+            $this->user_details = mysqli_fetch_array($this->user_query, MYSQLI_ASSOC);
+        }else{ $this->user_details = null; }
+        return $this->user_details;
+    }
+
+    //function to set user session
+    function set_user_sessions($user_details){
+        if (session_status() == PHP_SESSION_NONE) {  session_start(); }
+        $_SESSION['user_id'] = $user_details['user_id'];
+        $_SESSION['user_firstname'] = $user_details['user_firstname'];
+        $_SESSION['user_lastname'] = $user_details['user_lastname'];
+        $_SESSION['user_email'] = $user_details['user_email'];
+        $_SESSION['user_status'] = $user_details['user_status'];
+        $_SESSION['user_password'] = $user_details['user_password'];
+        $_SESSION['user_fullname'] = $_SESSION['user_firstname']." ".$_SESSION['user_lastname'];
     }
 
 
@@ -135,9 +158,14 @@ class Model_User{
         $this->user_query = mysql_query($conn, "UPDATE users SET user_status='activated' WHERE user_id='$user_id");
         if ($this->user_query == null) {
             $this->user_query_status = false;
-            //prompt user activation went wrong
-            exit();
+        }else{
+            $user_details = $this->get_user($conn, $user_id);
+            if($user_details != null){
+            $this->set_user_sessions($user_details);
+    }
         }
+        //true if activation was successful, false otherwise
+        return $user_query_status;
     }    
 
 
@@ -145,24 +173,13 @@ class Model_User{
     function change_user_password($conn, $user_id, $user_new_password, $user_old_password){
         $this->user_query_status = true;
         if ($this->confirm_password($conn, $user_email, $user_old_password) == true) {
-            $this->user_query = mysqli_connect($conn, "UPDATE users SET user_password='$user_new_password' WHERE user_id='$user_id'");
+            $this->user_query = mysqli_query($conn, "UPDATE users SET user_password='$user_new_password' WHERE user_id='$user_id'");
             //$this->user_query = mysqli_query($conn, "CALL change_user_password('$user_new_password', $user_id')");
             if ($this->user_query == null) {
                 $this->user_query_status = false;
             }
         }
     }
-
-// function to activate user
-function activate_user($conn, $user_id){
-   $this->user_query_status = true;
-   $this->user_query = mysql_query($conn, "UPDATE users SET user_status='activated' WHERE user_id='$user_id");
-   if ($this->user_query == null) {
-       $this->user_query_status = false;
-       //prompt user activation went wrong
-       exit();
-    }
-}
 
 
     

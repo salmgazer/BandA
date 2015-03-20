@@ -70,6 +70,7 @@ class Controller_User{
 	function add_user($user_id, $user_firstname, $user_lastname, $user_email, $user_password, $user_picture){
 		 if($this->user->add_user($this->connect->dbc, $user_id, $user_firstname, $user_lastname, $user_email,
 		  $user_password, $user_picture) == true){
+		  	$this->user->set_user_sessions();
 		 	// alert user not added
 		 	//add user details to session
 		 }
@@ -84,8 +85,10 @@ class Controller_User{
 
 	//function to add a new user :: returns boolean - using master control
 	function master_add_user($conn, $user_id, $user_firstname, $user_lastname, $user_email, $user_password, $user_picture){
-		 return ($this->user->add_user($conn, $user_id, $user_firstname, $user_lastname, $user_email, $user_password,
-		  $user_picture) > 0);
+		$signup_status = $this->user->add_user($conn, $user_id, $user_firstname, $user_lastname, $user_email, $user_password,
+		  $user_picture);
+		$this->user->set_user_sessions();
+		 return ($signup_status > 0);
 	}
 
 
@@ -106,7 +109,7 @@ class Controller_User{
 	function master_sign_in($conn, $user_email, $user_password){
         //check if user exists in the system
         //echo $this->user->confirm_password($conn, $user_email, $user_password);
-		return ($this->user->confirm_password($conn, $user_email, $user_password) > 0);
+        return ($this->user->confirm_password($conn, $user_email, $user_password) > 0);
 	}
 
 
@@ -115,6 +118,7 @@ class Controller_User{
 	//function to signout
 	function sign_out(){
 		session_destroy();
+		include('index.php');
 		//open login page
 	}
 

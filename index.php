@@ -1,4 +1,5 @@
-<?php session_start();
+<?php if (session_status() == PHP_SESSION_NONE) {  session_start(); }
+
 //start the app
 require_once('includes/initiate.php');
 //include functions

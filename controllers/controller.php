@@ -43,15 +43,10 @@ class Controller{
 		}
 	}
 
-
-
-
     //destructor for the class
 	function __destruct(){
 
 	}
-
-
 
     //function to signin using master controller
 	function sign_in($user_email, $user_password){
@@ -60,9 +55,6 @@ class Controller{
 		//master_sign_in() calls confirm_password in Model_User class
 		return $this->user_control->master_sign_in($this->connect->dbc, $user_email, $user_password);
 	}
-
-
-
 
 	//function to sign up using master controller
 	function sign_up($user_firstname, $user_lastname, $user_email, $user_password, $user_profile_picture){

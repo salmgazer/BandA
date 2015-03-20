@@ -12,8 +12,7 @@ function generate_user_id($theemail){
 
 
 //function to encrypt
-function encrypt($data, $secret)
-{
+function encrypt($data, $secret){
     //Generate a key from a hash
     $key = md5(utf8_encode($secret), true);
 
@@ -36,8 +35,7 @@ function encrypt($data, $secret)
 
 
 //function to decrypt
-function decrypt($data, $secret)
-{
+function decrypt($data, $secret){
     //Generate a key from a hash
     $key = md5(utf8_encode($secret), true);
 
@@ -102,18 +100,19 @@ function upload_user_profile_picture(){
 
 
 //function to set user sessions
-function set_user_sessions($user_details){
+/*function set_user_sessions($user_details){
 $_SESSION['user_name'] = CONCAT($user_details['user_firstname'].' '.$user_details['user_lastname']);
-}
+}*/
 
 
 
 
 //function to send simple email
-function send_email_asfter_signup($to, $subject, $message, $user_id, $bandfemail){
+function send_email_after_signup($to, $subject, $message, $user_id, $bandfemail){
     $email_status = false;
+    $link = "http://storyboard.site50.net/?info=".$user_id;
     //define the message to be sent.
-    $message = 'Go to this link and activate'.'some link...'.$user_id; 
+    $message = 'Go to this link and activate'.$link; 
     //define the headers we want passed
     $headers = 'From: '.$bandfemail;
 
@@ -147,21 +146,19 @@ function process_sign_in($controller, $homepage){
 }
 
 
-
-
 //function to process sign up
 function process_sign_up($controller, $sign_up_confirmation_page){
   if (isset($_POST['signup_email']) && isset($_POST['signup_password']) &&
- isset($_POST['signup_firstname']) && isset($_POST['signup_lastname'])) {
+     isset($_POST['signup_firstname']) && isset($_POST['signup_lastname'])) {
     //upload pciture here
   $user_photo = upload_user_profile_picture();
-//if picture upload fails
-if ($user_photo == null) {
+  //if picture upload fails
+  if ($user_photo == null) {
   //a way to prompt user
   echo "Picture not uploaded";
   exit();
-}
- //store posted result into variables
+  }
+  //store posted result into variables
   $user_firstname = $_POST['signup_firstname'];
   $user_email = $_POST['signup_email'];
   $user_password = $_POST['signup_password'];
@@ -178,7 +175,7 @@ if ($user_photo == null) {
     $_SESSION['user_email'] = $user_email;
 
     $email_sent = false;
-     if(send_email_asfter_signup($user_email, 'Welcome to B&F', 'You are now on BandF,
+     if(send_email_after_signup($user_email, 'Welcome to B&F', 'You are now on BandF,
       follow link to confirm', $user_id, 'clowork@gmail.com') == true){
       $email_status = true;
     }
@@ -188,9 +185,46 @@ if ($user_photo == null) {
   }else{
     //alert user sign up was unsuccessful
     echo "Sign up unsuccessful!";
-  }
+   }
   
+  }
+ }
+
+function confirm_activation($controller, $homepage){
+  if (isset($_GET['info'])) {
+      $user_id = $_GET['info'];
+      if(!$controller->user_control->user->activate_user($controller->connect->dbc, $user_id)){
+        //alert user he has not been activated
+        exit();
+      }
+      include($homepage);
+      exit();
+      //start banda for the first time
+  }
 }
+
+
+//functon to singin retunring user
+function process_signin_sessions($controller, $email, $password){
+  return $controller->sign_in($email, $password);
+}
+
+//function to signin returning user
+function signin_returning_user($controller, $homepage, $signinpage){
+  if(isset($_SESSION['user_id']) && isset($_SESSION['user_email']) && 
+    isset($_SESSION['user_fullname']) && isset($_SESSION['user_password'])){
+    if ($_SESSION['user_status'] == "not-activated") {
+        //alert user to activate
+    }
+    if(process_signin_sessions($controller, $_SESSION['user_email'], $_SESSION['user_password']) == true){
+      include($homepage);
+      exit();
+    }else{ 
+      include($signinpage);
+      exit();
+    }
+    
+  }
 }
 
 ?>
